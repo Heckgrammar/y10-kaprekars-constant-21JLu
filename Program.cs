@@ -1,4 +1,7 @@
-﻿namespace Y10_Challenge_Kaprikars_Constant
+﻿using System.Collections.Immutable;
+using System.Xml.Schema;
+
+namespace Y10_Challenge_Kaprikars_Constant
 {
     internal class Program
     {
@@ -13,11 +16,41 @@
             //Task: Write a program to compute Kaprekar's constant using any four digit start number
             //Ext: Display the number of iterations needed until 6174 is reached
 
-            Console.WriteLine("Hello, Type a four digit number:"); //starter code for students
-            int x = Convert.ToInt32(Console.ReadLine()); //starter for students
-            //YOUR CODE GOES HERE....
+            Console.WriteLine("Enter four digit number:");
+            string x = Console.ReadLine();
+            while (Convert.ToInt32(x) <= 0 || Convert.ToInt32(x) >= 9999 || x.Length != 4)
+            {
+                Console.WriteLine("Invalid. Enter again.");
+                x = Console.ReadLine();
+            }
+            char[] xArr = x.ToCharArray();
+            char temp = ' ';
 
-
+            while (x != "6174")
+            {
+                bool swap = true;
+                while (swap == true)
+                {
+                    swap = false;
+                    for (int i = 0; i < xArr.Length - 1; i++)
+                    {
+                        if (xArr[i] > xArr[i + 1])
+                        {
+                            temp = xArr[i];
+                            xArr[i] = xArr[i + 1];
+                            xArr[i + 1] = temp;
+                            swap = true;
+                        }
+                    }
+                }
+                char[] xArrReverse = xArr.Reverse().ToArray(); //REVERSES → DESCENDING
+                string xReverse = new string(xArrReverse); //USED FOR SUBTRACTION (DESCENDING)
+                string xNotAnArr = new string(xArr); //USED FOR SUBTRACTION (ASCENDING)
+                x = Convert.ToString(Convert.ToInt32(xReverse) - Convert.ToInt32(xNotAnArr));
+                Console.WriteLine(xReverse + " - " + xNotAnArr + " = " + x);
+                xArr = x.ToCharArray();
+            }
+            Console.WriteLine("6174: Kaprekar's Constant");
         }
     }
 }
